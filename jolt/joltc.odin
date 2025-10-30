@@ -1022,6 +1022,7 @@ foreign lib {
 	ShapeSettings_SetUserData :: proc(settings: ^ShapeSettings, userData: u64) ---
 
 	/* Shape */
+	Shape_Draw                       :: proc(shape: ^Shape, renderer: ^DebugRenderer, centerOfMassTransform: ^RMat4, scale: ^Vec3, color: Color, useMaterialColors: bool, drawWireframe: bool) ---
 	Shape_Destroy                    :: proc(shape: ^Shape) ---
 	Shape_GetType                    :: proc(shape: ^Shape) -> ShapeType ---
 	Shape_GetSubType                 :: proc(shape: ^Shape) -> ShapeSubType ---
