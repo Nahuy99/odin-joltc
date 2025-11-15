@@ -6,6 +6,7 @@ remove_function_prefix = "JPH_"
 imports_file = "imports.inc"
 package_name = "jolt"
 type_overrides = {
+    "JPH_Point" = "[2]f32"
     "JPH_Vec3" = "[3]f32"
     "JPH_Vec4" = "[4]f32"
     "JPH_Quat" = "quaternion128"
