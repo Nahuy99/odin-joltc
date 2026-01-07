@@ -73,12 +73,12 @@ add_box :: proc(box: Box) {
 g_floor_body_id: jolt.BodyID
 add_floor :: proc() {
     floor_extent := Vec3 {100, 0.05, 100}
-    floot_position := Vec3 {0, -0.05, 0}
+    floor_position := Vec3 {0, -0.05, 0}
     floor_shape := jolt.BoxShape_Create(&floor_extent, 0)
     defer jolt.Shape_Destroy(auto_cast floor_shape)
     floor_settings := jolt.BodyCreationSettings_Create3(
         shape = auto_cast floor_shape,
-        position = &floot_position,
+        position = &floor_position,
         rotation = &QUAT_IDENTITY,
         motionType = .Static,
         objectLayer = PHYS_LAYER_NON_MOVING,
@@ -323,11 +323,11 @@ main :: proc() {
         for &box in boxes {
             pos := linalg.lerp(box.prev_position, box.position, fixed_interpolation_delta)
             rot := linalg.quaternion_slerp(box.prev_rotation, box.rotation, fixed_interpolation_delta)
-            angle, axis := linalg.angle_axis_from_quaternion(rot)
+            rot_mat:= linalg.matrix4_from_quaternion(rot)
 
             rlgl.PushMatrix()
             rlgl.Translatef(pos.x, pos.y, pos.z)
-            rlgl.Rotatef(linalg.to_degrees(angle), axis.x, axis.y, axis.z)
+            rlgl.MultMatrixf(&rot_mat[0][0])
             rl.DrawCubeV(0, box.extent * 2, box.color)
             rl.DrawCubeWiresV(0, box.extent * 2, rl.BLACK)
             rlgl.PopMatrix()
