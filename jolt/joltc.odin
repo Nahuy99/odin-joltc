@@ -805,7 +805,7 @@ JobSystemConfig :: struct {
 JobSystem :: struct {}
 
 /* Calculate max tire impulses by combining friction, slip, and suspension impulse. Note that the actual applied impulse may be lower (e.g. when the vehicle is stationary on a horizontal surface the actual impulse applied will be 0) */
-TireMaxImpulseCallback :: proc "c" (wheelIndex: u32, outLongitudinalImpulse: ^f32, outLateralImpulse: ^f32, suspensionImpulse: f32, longitudinalFriction: f32, lateralFriction: f32, longitudinalSlip: f32, lateralSlip: f32, deltaTime: f32)
+TireMaxImpulseCallback :: proc "c" (userData: rawptr, wheelIndex: u32, outLongitudinalImpulse: ^f32, outLateralImpulse: ^f32, suspensionImpulse: f32, longitudinalFriction: f32, lateralFriction: f32, longitudinalSlip: f32, lateralSlip: f32, deltaTime: f32)
 
 @(default_calling_convention="c", link_prefix="JPH_")
 foreign lib {
@@ -2348,7 +2348,7 @@ foreign lib {
 	WheeledVehicleController_SetHandBrakeInput                       :: proc(controller: ^WheeledVehicleController, handBrakeInput: f32) ---
 	WheeledVehicleController_GetHandBrakeInput                       :: proc(controller: ^WheeledVehicleController) -> f32 ---
 	WheeledVehicleController_GetWheelSpeedAtClutch                   :: proc(controller: ^WheeledVehicleController) -> f32 ---
-	WheeledVehicleController_SetTireMaxImpulseCallback               :: proc(controller: ^WheeledVehicleController, tireMaxImpulseCallback: TireMaxImpulseCallback) ---
+	WheeledVehicleController_SetTireMaxImpulseCallback               :: proc(controller: ^WheeledVehicleController, tireMaxImpulseCallback: TireMaxImpulseCallback, userData: rawptr) ---
 	WheeledVehicleController_GetEngine                               :: proc(controller: ^WheeledVehicleController) -> ^VehicleEngine ---
 	WheeledVehicleController_GetTransmission                         :: proc(controller: ^WheeledVehicleController) -> ^VehicleTransmission ---
 
@@ -2419,7 +2419,7 @@ foreign lib {
 	LinearCurve_GetMaxX       :: proc(curve: ^LinearCurve) -> f32 ---
 	LinearCurve_GetValue      :: proc(curve: ^LinearCurve, x: f32) -> f32 ---
 	LinearCurve_GetPointCount :: proc(curve: ^LinearCurve) -> u32 ---
-	LinearCurve_GetPoint      :: proc(curve: ^LinearCurve, index: u32) -> Point ---
+	LinearCurve_GetPoint      :: proc(curve: ^LinearCurve, index: u32, result: ^Point) ---
 	LinearCurve_GetPoints     :: proc(curve: ^LinearCurve, points: ^Point, count: ^u32) ---
 }
 
